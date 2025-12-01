@@ -1,0 +1,28 @@
+name: Deploy Viewer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/viewer/**'
+      - 'packages/shared/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/deploy-viewer.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Viewer to Fly.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only --config apps/viewer/fly.toml
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

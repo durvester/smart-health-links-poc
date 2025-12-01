@@ -9,7 +9,7 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 COPY apps/web ./apps/web
 COPY packages/shared ./packages/shared
-COPY tsconfig.json ./
+COPY tsconfig.base.json ./
 
 ARG VITE_API_URL=https://api.myhealthurl.com
 ENV VITE_API_URL=$VITE_API_URL

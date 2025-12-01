@@ -12,7 +12,7 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 # Copy source
 COPY apps/api ./apps/api
 COPY packages/shared ./packages/shared
-COPY tsconfig.json ./
+COPY tsconfig.base.json ./
 
 # Build
 RUN pnpm --filter @myhealthurl/api build
@@ -20,11 +20,21 @@ RUN pnpm --filter @myhealthurl/api build
 FROM node:20-slim
 WORKDIR /app
 
-# Copy built files
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/packages ./packages
+# Install pnpm for production dependency resolution
+RUN npm install -g pnpm
 
+# Copy workspace files (needed for pnpm to resolve dependencies)
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/shared/package.json ./packages/shared/
+
+# Install production dependencies only
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy built files and shared package source (exports types/constants)
+COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/packages/shared ./packages/shared
+
+WORKDIR /app/apps/api
 EXPOSE 8080
 CMD ["node", "dist/index.js"]

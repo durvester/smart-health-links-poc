@@ -1,0 +1,27 @@
+app = "myhealthurl-api"
+primary_region = "sjc"
+
+[build]
+
+[env]
+  NODE_ENV = "production"
+  PORT = "8080"
+  APP_URL = "https://app.myhealthurl.com"
+  API_URL = "https://api.myhealthurl.com"
+  VIEWER_URL = "https://myhealthurl.com"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[mounts]
+  source = "myhealthurl_data"
+  destination = "/app/data"

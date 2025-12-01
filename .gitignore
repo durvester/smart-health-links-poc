@@ -40,10 +40,6 @@ drizzle/
 # Misc
 *.tsbuildinfo
 
-# Fly.io deployment
-fly.toml
-**/fly.toml
-
 # Internal documentation (specs, logs)
 PROJECT_LOG.md
 SPECIFICATION.md
