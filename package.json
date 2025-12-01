@@ -1,0 +1,25 @@
+{
+  "name": "myhealthurl",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SMART on FHIR application for sharing patient documents via SMART Health Links",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "db:migrate": "pnpm --filter @myhealthurl/api db:migrate",
+    "db:studio": "pnpm --filter @myhealthurl/api db:studio",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@9.14.2",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

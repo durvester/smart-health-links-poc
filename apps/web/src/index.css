@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+  }
+
+  ::selection {
+    @apply bg-gray-900 text-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-all duration-150 rounded-lg;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-gray-900 text-white hover:bg-gray-800;
+    @apply focus:ring-gray-900;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gray-900 border border-gray-200 hover:bg-gray-50;
+    @apply focus:ring-gray-400;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-100;
+    @apply focus:ring-gray-400;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 text-sm border border-gray-200 rounded-lg;
+    @apply placeholder-gray-400 bg-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent;
+    @apply transition-all duration-150;
+  }
+
+  .checkbox {
+    @apply h-4 w-4 rounded border-gray-300 text-gray-900;
+    @apply focus:ring-gray-900 focus:ring-offset-0;
+  }
+
+  .select {
+    @apply w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent;
+    @apply transition-all duration-150;
+  }
+}
