@@ -2,7 +2,7 @@ app = "myhealthurl-api"
 primary_region = "sjc"
 
 [build]
-  dockerfile = "apps/api/Dockerfile"
+  dockerfile = "Dockerfile"
 
 [env]
   NODE_ENV = "production"
