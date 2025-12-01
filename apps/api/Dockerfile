@@ -14,8 +14,8 @@ COPY apps/api ./apps/api
 COPY packages/shared ./packages/shared
 COPY tsconfig.base.json ./
 
-# Build
-RUN pnpm --filter @myhealthurl/api build
+# Build shared package first, then api
+RUN pnpm --filter @myhealthurl/shared build && pnpm --filter @myhealthurl/api build
 
 FROM node:20-slim
 WORKDIR /app

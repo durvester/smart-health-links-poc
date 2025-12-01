@@ -14,7 +14,8 @@ COPY tsconfig.base.json ./
 ARG VITE_API_URL=https://api.myhealthurl.com
 ENV VITE_API_URL=$VITE_API_URL
 
-RUN pnpm --filter @myhealthurl/viewer build
+# Build shared package first, then viewer
+RUN pnpm --filter @myhealthurl/shared build && pnpm --filter @myhealthurl/viewer build
 
 FROM nginx:alpine
 COPY --from=builder /app/apps/viewer/dist /usr/share/nginx/html
