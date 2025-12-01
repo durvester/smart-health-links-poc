@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { Spinner, CheckIcon, DocumentIcon, CopyIcon, QrCodeIcon, CloseIcon, ListIcon } from '../components/Icons';
 import type { SessionData, Document } from '../types';
@@ -7,6 +7,7 @@ import { API_URL } from '../lib/api';
 
 export default function CreateLink() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [session, setSession] = useState<SessionData | null>(null);
@@ -18,10 +19,30 @@ export default function CreateLink() {
   const [generatedLink, setGeneratedLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
+  const lastSessionTime = useRef<string | null>(null);
 
   useEffect(() => {
+    // Check if this is a new session (from OAuth callback)
+    const sessionParam = searchParams.get('session');
+    const timeParam = searchParams.get('t');
+
+    // If there's a new session indicator or the timestamp changed, clear state and refetch
+    if (sessionParam === 'new' || (timeParam && timeParam !== lastSessionTime.current)) {
+      lastSessionTime.current = timeParam;
+      // Clear the URL params to avoid refetch on every render
+      setSearchParams({}, { replace: true });
+      // Reset all state
+      setSession(null);
+      setSelectedDocs(new Set());
+      setPhone('');
+      setEmail('');
+      setGeneratedLink(null);
+      setError(null);
+      setLoading(true);
+    }
+
     fetchSession();
-  }, []);
+  }, [searchParams]);
 
   async function fetchSession() {
     try {

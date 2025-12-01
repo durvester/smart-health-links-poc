@@ -295,8 +295,9 @@ export async function registerSmartRoutes(fastify: FastifyInstance): Promise<voi
           maxAge: 60 * 60 * 24, // 24 hours
         });
 
-        // Redirect to web app
-        return reply.redirect(config.APP_URL);
+        // Redirect to web app with new session indicator
+        // This ensures the SPA refreshes even if already loaded (e.g., in iframe)
+        return reply.redirect(`${config.APP_URL}?session=new&t=${Date.now()}`);
       } catch (error) {
         request.log.error({ error }, 'OAuth callback failed');
         return reply.status(500).send({
