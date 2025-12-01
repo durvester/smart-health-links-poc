@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Spinner, ChevronLeftIcon, ChevronRightIcon, PlusIcon, LinkIcon } from '../components/Icons';
 import type { ShlListItem } from '../types';
+import { API_URL } from '../lib/api';
 
 function StatusBadge({ status }: { status: 'active' | 'expired' | 'revoked' }) {
   const styles = {
@@ -36,7 +37,7 @@ export default function ShlList() {
 
   async function fetchShls() {
     try {
-      const res = await fetch('/api/shls', { credentials: 'include' });
+      const res = await fetch(`${API_URL}/api/shls`, { credentials: 'include' });
       if (!res.ok) {
         if (res.status === 401) {
           setError('Session expired. Please launch from your EHR.');

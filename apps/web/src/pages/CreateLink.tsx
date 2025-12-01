@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { Spinner, CheckIcon, DocumentIcon, CopyIcon, QrCodeIcon, CloseIcon, ListIcon } from '../components/Icons';
 import type { SessionData, Document } from '../types';
+import { API_URL } from '../lib/api';
 
 export default function CreateLink() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function CreateLink() {
 
   async function fetchSession() {
     try {
-      const res = await fetch('/api/session', { credentials: 'include' });
+      const res = await fetch(`${API_URL}/api/session`, { credentials: 'include' });
       if (!res.ok) {
         if (res.status === 401) {
           setError('Please launch this app from your EHR.');
@@ -70,7 +71,7 @@ export default function CreateLink() {
 
     setGenerating(true);
     try {
-      const res = await fetch('/api/shl', {
+      const res = await fetch(`${API_URL}/api/shl`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

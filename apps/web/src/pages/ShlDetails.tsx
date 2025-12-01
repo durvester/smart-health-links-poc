@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { QRCodeSVG } from 'qrcode.react';
 import { Spinner, ChevronLeftIcon, CopyIcon, QrCodeIcon, CloseIcon, TrashIcon } from '../components/Icons';
 import type { ShlDetails } from '../types';
+import { API_URL } from '../lib/api';
 
 function StatusBadge({ status }: { status: 'active' | 'expired' | 'revoked' }) {
   const styles = {
@@ -43,7 +44,7 @@ export default function ShlDetailsPage() {
 
   async function fetchDetails() {
     try {
-      const res = await fetch(`/api/shls/${id}`, { credentials: 'include' });
+      const res = await fetch(`${API_URL}/api/shls/${id}`, { credentials: 'include' });
       if (!res.ok) {
         if (res.status === 404) {
           setError('Link not found');
@@ -77,7 +78,7 @@ export default function ShlDetailsPage() {
   async function revokeLink() {
     setRevoking(true);
     try {
-      const res = await fetch(`/api/shls/${id}/revoke`, {
+      const res = await fetch(`${API_URL}/api/shls/${id}/revoke`, {
         method: 'POST',
         credentials: 'include',
       });
