@@ -2,6 +2,7 @@ app = "myhealthurl-web"
 primary_region = "sjc"
 
 [build]
+  dockerfile = "apps/web/Dockerfile"
 
 [http_service]
   internal_port = 8080
