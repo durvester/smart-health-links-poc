@@ -3,6 +3,7 @@
  *
  * Handles the public SMART Health Link manifest endpoint:
  * - POST /shl/:id/manifest - Return manifest with pre-signed bundle URL
+ * - GET /shl/:id/manifest - Returns 405 with helpful message (SHL spec requires POST)
  *
  * This endpoint is PUBLIC (no authentication required) per SHL spec.
  * The security is provided by the 256-bit manifest ID and encryption key.
@@ -182,6 +183,14 @@ async function handleManifest(
 // ============================================
 
 export async function registerManifestRoutes(fastify: FastifyInstance): Promise<void> {
-  // Public manifest endpoint
+  // Public manifest endpoint (POST required per SHL spec)
   fastify.post('/shl/:id/manifest', handleManifest);
+
+  // Return 405 for GET requests with helpful message
+  fastify.get('/shl/:id/manifest', async (_request, reply) => {
+    reply.status(405).send({
+      error: 'Method not allowed',
+      message: 'POST required per SHL specification. Include {"recipient": "name"} in request body.',
+    });
+  });
 }
