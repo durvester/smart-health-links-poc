@@ -25,8 +25,11 @@ async function main() {
   });
 
   // Register plugins
+  // CORS: Allow any origin for SHL interoperability
+  // - Manifest endpoint is public per SHL spec (security via URL entropy + encryption)
+  // - Authenticated endpoints use httpOnly session cookies (domain-locked to api.myhealthurl.com)
   await fastify.register(cors, {
-    origin: [config.APP_URL, config.VIEWER_URL],
+    origin: true,
     credentials: true,
   });
 
